@@ -70,7 +70,36 @@ async function loadPost() {
         `;
         // Move post content below the main content
         document.querySelector('.main-content').appendChild(postContent);
+
+        initReadingProgress();
     }
+}
+
+// Fixed bar at the top showing scroll progress through the post
+function initReadingProgress() {
+    const bar = document.createElement('div');
+    bar.className = 'reading-progress';
+    const fill = document.createElement('div');
+    fill.className = 'reading-progress-fill';
+    bar.appendChild(fill);
+    document.body.appendChild(bar);
+
+    let rafId = null;
+    const update = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable > 0 ? Math.min(100, Math.max(0, (window.scrollY / scrollable) * 100)) : 0;
+        fill.style.width = `${progress}%`;
+        rafId = null;
+    };
+    window.addEventListener('scroll', () => {
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(update);
+    });
+    window.addEventListener('resize', () => {
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(update);
+    });
+    update();
 }
 
 // Load footer content

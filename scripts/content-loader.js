@@ -8,7 +8,7 @@ function createNavButtons(navigation) {
 // Function to create skill tags
 function createSkillTags(skills) {
     return skills.map(skill =>
-        `<span class="skill-tag"><span class="rune"></span>${skill}</span>`
+        `<span class="skill-tag">${skill}</span>`
     ).join('');
 }
 
@@ -189,8 +189,8 @@ function populateResumePage(cvData) {
             <div class="resume-block">
                 <h3>${cvData.experience.title}</h3>
                 ${cvData.experience.items.map(exp => `
-                    <div class="experience-item">
-                        <h4>${exp.company}</h4>
+                    <div class="experience-item${exp.duration.includes('Present') ? ' is-current' : ''}">
+                        <h4>${exp.company}${exp.duration.includes('Present') ? '<span class="current-badge">current</span>' : ''}</h4>
                         <p class="role">${exp.role}</p>
                         <p class="duration">${exp.duration}</p>
                     </div>
