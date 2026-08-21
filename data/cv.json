@@ -1,21 +1,21 @@
 {
-  "title": "📄 Adventurer's Dossier",
+  "title": "📜 Adventurer's Dossier",
   "summary": "Infrastructure-focused engineer with iOS/macOS experience, working across build systems, CI/CD, and release workflows to make mobile teams faster and more reliable.",
   "skills": {
     "title": "⚡ Dark Arts & Spells",
     "items": [
       "⚒️ Xcode Build System",
       "🔮 Bazel",
-      "✨ iOS Development",
+      "🌙 iOS Development",
       "🛡️ Objective-C",
       "⚔️ Swift",
       "🏹 CI/CD",
-      "🎯 Build Optimization",
-      "💎 Architecture Design"
+      "⚗️ Build Optimization",
+      "🏛️ Architecture Design"
     ]
   },
   "experience": {
-    "title": "🏰 Quest Log",
+    "title": "🗺️ Quest Log",
     "items": [
       {
         "company": "Spotify",

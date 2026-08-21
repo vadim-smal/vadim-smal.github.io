@@ -10,19 +10,19 @@
   },
   "sections": {
     "resume": {
-      "title": "📄 Adventurer's Dossier"
+      "title": "📜 Adventurer's Dossier"
     },
     "posts": {
-      "title_home": "📜 My Latest Chronicles",
-      "title_all": "📜 Chronicles"
+      "title_home": "📖 My Latest Chronicles",
+      "title_all": "📖 Chronicles"
     }
   },
   "contact": {
-    "title": "📜 Send a Message",
+    "title": "🕯️ Send a Message",
     "description": "Want to start a new quest together? Let's join forces!",
     "social": [
       {
-        "name": "🐦‍⬛ Send Raven",
+        "name": "🦉 Send Raven",
         "url": "mailto:CognitiveDisson@gmail.com"
       },
       {
