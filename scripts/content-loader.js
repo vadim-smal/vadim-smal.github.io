@@ -160,7 +160,7 @@ function populateResumeSection(mainData, cvData) {
     const resume = document.getElementById('resume');
     if (!resume) return;
     resume.innerHTML = `
-        <h2>${mainData.sections.resume.title}</h2>
+        <h2><a href="resume.html">${mainData.sections.resume.title}</a></h2>
         <a class="resume-card-link" href="resume.html">
             <div class="resume-card">
                 <p>${cvData.summary}</p>
@@ -247,8 +247,7 @@ function buildPageShell(mode, mainData) {
                 <section id="hero" class="hero-section"></section>
                 <section id="resume"></section>
                 <section id="posts" class="posts-section">
-                    <h2>${mainData.sections.posts.title_home}</h2>
-                    <a class="section-link" href="chronicles.html">View all chronicles →</a>
+                    <h2><a href="chronicles.html">${mainData.sections.posts.title_home}</a></h2>
                     <div class="posts-grid"></div>
                 </section>
                 <section id="contact"></section>

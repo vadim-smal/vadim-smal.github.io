@@ -497,6 +497,17 @@ body::after {
   animation: gradient 4s ease infinite;
 }
 
+.main-content h2 a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.main-content h2 a:hover,
+.main-content h2 a:focus-visible {
+  color: #fff;
+}
+
 .resume-header {
   display: flex;
   flex-direction: column;
@@ -541,25 +552,6 @@ body::after {
 .main-content h3 {
   color: var(--accent-glow);
   text-shadow: 0 0 8px rgba(115, 247, 255, 0.35);
-}
-
-.section-link {
-  display: flex;
-  width: fit-content;
-  align-items: center;
-  gap: 0.35rem;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  text-decoration: none;
-  margin: 0.5rem 0 1rem;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.section-link:hover,
-.section-link:focus-visible {
-  color: #fff;
-  transform: translateX(2px);
 }
 
 /* Resume */
