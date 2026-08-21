@@ -67,8 +67,75 @@ window.addEventListener('load', () => {
         }, 300);
     }, 1000);
 
+    if (!document.querySelector('.starfield')) {
+        const starfield = document.createElement('div');
+        starfield.classList.add('starfield');
+        document.body.prepend(starfield);
+    }
+
     initializeAnimations();
 });
+
+// Ambient cursor glow + card tilt (decorative only, desktop pointer devices)
+if (motionOk && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const glow = document.createElement('div');
+    glow.classList.add('cursor-glow');
+    glow.style.opacity = '0';
+    document.body.appendChild(glow);
+
+    let glowX = window.innerWidth / 2;
+    let glowY = window.innerHeight / 2;
+    let targetX = glowX;
+    let targetY = glowY;
+    let glowRafId = null;
+
+    function tickGlow() {
+        glowX += (targetX - glowX) * 0.12;
+        glowY += (targetY - glowY) * 0.12;
+        glow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0)`;
+        glowRafId = window.requestAnimationFrame(tickGlow);
+    }
+
+    window.addEventListener('pointermove', (event) => {
+        targetX = event.clientX;
+        targetY = event.clientY;
+        glow.style.opacity = '1';
+        if (!glowRafId) {
+            glowX = targetX;
+            glowY = targetY;
+            tickGlow();
+        }
+    });
+
+    const TILT_SELECTOR = '.hero-card, .post-card, .resume-card';
+    let tiltEl = null;
+
+    function resetTilt() {
+        if (tiltEl) {
+            tiltEl.style.transform = '';
+            tiltEl = null;
+        }
+    }
+
+    window.addEventListener('pointermove', (event) => {
+        const el = event.target.closest ? event.target.closest(TILT_SELECTOR) : null;
+        if (el !== tiltEl) {
+            resetTilt();
+            tiltEl = el;
+        }
+        if (!tiltEl) return;
+        const rect = tiltEl.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width - 0.5;
+        const py = (event.clientY - rect.top) / rect.height - 0.5;
+        const rotateY = px * 8;
+        const rotateX = py * -8;
+        tiltEl.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    });
+
+    window.addEventListener('mouseout', (event) => {
+        if (!event.relatedTarget) resetTilt();
+    });
+}
 
 if (motionOk) {
     let rafId = null;

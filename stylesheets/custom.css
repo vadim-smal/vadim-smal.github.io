@@ -19,6 +19,7 @@
   --hover-glow: 0 0 18px rgba(115, 247, 255, 0.35);
   --hover-lift: -2px;
   --hover-border: rgba(115, 247, 255, 0.55);
+  --ease-snap: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Keyframes */
@@ -82,6 +83,30 @@
   100% { background-position: 100%; }
 }
 
+@keyframes starDrift {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+  100% { background-position: 400px 400px, -350px 350px, 300px -300px, -380px -380px, 420px 0px, 0px 360px; }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes nameShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes borderGlowPulse {
+  0%, 100% { box-shadow: 0 0 18px rgba(115, 247, 255, 0.4); }
+  50% { box-shadow: 0 0 28px rgba(255, 107, 151, 0.5); }
+}
+
 /* Base */
 html, body {
   margin: 0;
@@ -142,6 +167,41 @@ body::after {
   pointer-events: none;
 }
 
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.8;
+  background:
+    radial-gradient(1.5px 1.5px at 10% 15%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(1px 1px at 35% 70%, rgba(115, 247, 255, 0.45), transparent 60%),
+    radial-gradient(1.5px 1.5px at 60% 30%, rgba(125, 249, 176, 0.45), transparent 60%),
+    radial-gradient(1px 1px at 80% 80%, rgba(255, 107, 151, 0.4), transparent 60%),
+    radial-gradient(1.5px 1.5px at 90% 20%, rgba(255, 255, 255, 0.4), transparent 60%),
+    radial-gradient(1px 1px at 20% 90%, rgba(115, 247, 255, 0.35), transparent 60%);
+  background-repeat: repeat;
+  background-size: 380px 380px, 340px 340px, 300px 300px, 360px 360px, 400px 400px, 320px 320px;
+  animation: starDrift 90s linear infinite, twinkle 5s ease-in-out infinite;
+}
+
+/* Cursor-follow ambient glow (desktop pointer only) */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 320px;
+  margin-left: -160px;
+  margin-top: -160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(115, 247, 255, 0.16), rgba(139, 49, 238, 0.12) 45%, transparent 70%);
+  filter: blur(4px);
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform;
+}
+
 .page-wrapper {
   min-height: 100vh;
   display: flex;
@@ -171,11 +231,13 @@ body::after {
   background: rgba(19, 19, 27, 0.85);
   border: 2px solid rgba(115, 247, 255, 0.35);
   box-shadow: 0 0 22px rgba(115, 247, 255, 0.16);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 1.25rem 1.5rem;
   max-width: 760px;
   margin: 0 auto;
   position: relative;
+  backdrop-filter: blur(6px);
+  transition: transform 0.15s var(--ease-snap), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .hero {
@@ -200,11 +262,25 @@ body::after {
   width: 88px;
   height: 88px;
   border-radius: 16px;
-  overflow: hidden;
+  overflow: visible;
   border: 3px solid var(--accent-glow);
   box-shadow: 0 0 18px rgba(115, 247, 255, 0.4);
   background: rgba(19, 19, 27, 0.6);
   flex: 0 0 auto;
+  position: relative;
+  animation: borderGlowPulse 4s ease-in-out infinite;
+}
+
+.hero-avatar::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 20px;
+  z-index: -1;
+  background: conic-gradient(from 0deg, var(--accent-glow), var(--accent-mint), var(--accent-color), var(--secondary-color), var(--accent-glow));
+  filter: blur(3px);
+  opacity: 0.85;
+  animation: ringSpin 6s linear infinite;
 }
 
 .hero-avatar img {
@@ -213,6 +289,7 @@ body::after {
   object-fit: cover;
   object-position: 50% 30%;
   display: block;
+  border-radius: 13px;
 }
 
 .hero-text {
@@ -225,9 +302,13 @@ body::after {
 
 .hero-name {
   font-family: 'Press Start 2P', cursive;
-  color: var(--accent-color);
-  text-shadow: 0 0 10px rgba(255, 107, 151, 0.5), 4px 4px 0 var(--dark-bg);
-  animation: float 2s ease-in-out infinite;
+  background: linear-gradient(90deg, var(--accent-color), var(--accent-glow), var(--accent-mint), var(--accent-color));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 107, 151, 0.45));
+  animation: float 2s ease-in-out infinite, nameShimmer 6s linear infinite;
   font-size: 1.1rem;
 }
 
@@ -325,7 +406,8 @@ body::after {
   font-size: 0.8em;
   position: relative;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  border-radius: 4px;
+  transition: transform 0.2s var(--ease-snap), box-shadow 0.25s ease, color 0.2s ease, border-color 0.25s ease;
 }
 
 .btn::after {
@@ -343,9 +425,14 @@ body::after {
 
 .btn:hover,
 .btn:focus-visible {
-  transform: translateY(var(--hover-lift));
+  transform: translateY(var(--hover-lift)) scale(1.03);
   box-shadow: var(--hover-glow), inset 0 0 18px rgba(139, 49, 238, 0.3);
   color: #fff;
+  border-color: var(--hover-border);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.97);
 }
 
 /* Sections */
@@ -357,10 +444,22 @@ body::after {
   background: linear-gradient(180deg, rgba(26, 26, 36, 0.9), rgba(19, 19, 27, 0.9));
   border: 2px solid rgba(139, 49, 238, 0.35);
   box-shadow: 0 0 22px rgba(139, 49, 238, 0.12);
-  border-radius: 6px;
-  backdrop-filter: blur(2px);
+  border-radius: var(--radius-md, 12px);
+  backdrop-filter: blur(6px);
   position: relative;
   overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-content section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  pointer-events: none;
 }
 
 .main-content section::before {
@@ -393,7 +492,9 @@ body::after {
   right: -30%;
   bottom: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent-mint), transparent);
+  background: linear-gradient(90deg, var(--accent-mint), var(--accent-glow), transparent);
+  background-size: 200% 100%;
+  animation: gradient 4s ease infinite;
 }
 
 .resume-header {
@@ -443,7 +544,8 @@ body::after {
 }
 
 .section-link {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 0.35rem;
   font-family: 'Press Start 2P', cursive;
@@ -470,6 +572,7 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  transition: transform 0.15s var(--ease-snap), box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .resume-card.full {
@@ -534,18 +637,30 @@ body[data-page="resume"] .main-content section {
   box-shadow: 0 0 10px rgba(139, 49, 238, 0.3);
   color: var(--text-color);
   padding: 0.55rem 1rem 0.55rem 2rem;
+  border-radius: 999px;
   animation: float 3s ease-in-out infinite;
+  animation-delay: calc(var(--tag-index, 0) * 0.15s);
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+  transition: transform 0.2s var(--ease-snap), box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
+
+.skill-tag:nth-child(1) { --tag-index: 1; }
+.skill-tag:nth-child(2) { --tag-index: 2; }
+.skill-tag:nth-child(3) { --tag-index: 3; }
+.skill-tag:nth-child(4) { --tag-index: 4; }
+.skill-tag:nth-child(5) { --tag-index: 5; }
+.skill-tag:nth-child(6) { --tag-index: 6; }
+.skill-tag:nth-child(7) { --tag-index: 7; }
+.skill-tag:nth-child(8) { --tag-index: 8; }
 
 .skill-tag::before {
   content: '';
   position: absolute;
   inset: 0;
-  border: 1px solid var(--secondary-color);
+  background: linear-gradient(120deg, rgba(139, 49, 238, 0.35), rgba(115, 247, 255, 0.25));
   opacity: 0;
-  transition: all 0.3s;
+  transition: opacity 0.3s;
 }
 
 .skill-tag .rune {
@@ -582,20 +697,63 @@ body[data-page="resume"] .main-content section {
 }
 
 /* Experience + Education */
+.experience-section,
+.education-section {
+  position: relative;
+}
+
 .experience-item,
 .education-item {
-  padding: 1rem 1.25rem;
-  margin: 1rem 0;
-  border-left: 3px solid var(--accent-glow);
+  padding: 1rem 1.25rem 1rem 1.75rem;
+  margin: 1rem 0 1rem 0.5rem;
+  border-left: none;
   background: rgba(19, 19, 27, 0.6);
   box-shadow: inset 0 0 18px rgba(139, 49, 238, 0.12);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s var(--ease-snap), border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  border-radius: 4px;
+}
+
+.experience-item::before,
+.education-item::before {
+  content: '';
+  position: absolute;
+  left: -0.5rem;
+  top: 1.2rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  box-shadow: 0 0 10px rgba(115, 247, 255, 0.7), 0 0 0 3px rgba(115, 247, 255, 0.15);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.experience-item::after,
+.education-item::after {
+  content: '';
+  position: absolute;
+  left: -0.125rem;
+  top: 1.7rem;
+  bottom: -1.5rem;
+  width: 2px;
+  background: linear-gradient(var(--accent-glow), rgba(115, 247, 255, 0.15));
+}
+
+.experience-item:last-child::after,
+.education-item:last-child::after {
+  display: none;
 }
 
 .experience-item:hover,
 .education-item:hover {
   transform: translateX(6px);
   border-color: var(--accent-mint);
+}
+
+.experience-item:hover::before,
+.education-item:hover::before {
+  background: var(--accent-mint);
+  box-shadow: 0 0 12px rgba(125, 249, 176, 0.8), 0 0 0 3px rgba(125, 249, 176, 0.18);
 }
 
 .experience-item .role,
@@ -607,12 +765,17 @@ body[data-page="resume"] .main-content section {
 
 /* Posts */
 .posts-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+  align-items: stretch;
+}
+
+.main-content section.posts-section {
+  width: min(1040px, 100%);
 }
 
 .post-card-link {
@@ -620,6 +783,7 @@ body[data-page="resume"] .main-content section {
   color: inherit;
   display: block;
   cursor: pointer;
+  height: 100%;
 }
 
 .post-card-link:focus-visible .post-card {
@@ -633,8 +797,12 @@ body[data-page="resume"] .main-content section {
   box-shadow: 0 0 10px rgba(139, 49, 238, 0.3);
   padding: 1.5rem;
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.15s var(--ease-snap), box-shadow 0.3s ease, border-color 0.3s ease;
   width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border-radius: 12px;
 }
@@ -766,7 +934,8 @@ body[data-page="resume"] .main-content section {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  animation: fadeInUp 0.3s ease-out;
+  border-radius: 8px;
+  animation: fadeInUp 0.4s var(--ease-snap);
 }
 
 .post-header {
@@ -779,10 +948,20 @@ body[data-page="resume"] .main-content section {
   line-height: 1.8;
 }
 
+.post-body h1 {
+  font-family: 'Press Start 2P', cursive;
+  color: var(--accent-color);
+  text-shadow: 0 0 10px rgba(255, 107, 151, 0.5);
+  font-size: 1.3rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+}
+
 .post-body h2 {
   color: var(--secondary-color);
   margin: 1.5rem 0;
   font-size: 1.4em;
+  text-shadow: 0 0 8px rgba(139, 49, 238, 0.35);
 }
 
 .post-body ul {
@@ -804,35 +983,40 @@ body[data-page="resume"] .main-content section {
 .close-btn,
 .back-btn {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
   gap: 0.5rem;
   background: var(--dark-bg);
   border: var(--pixel-border) solid var(--primary-color);
   box-shadow: 0 0 10px rgba(139, 49, 238, 0.3);
   padding: 0.8rem 1.4rem;
-  transition: all 0.3s ease;
+  border-radius: 4px;
+  transition: transform 0.2s var(--ease-snap), box-shadow 0.3s ease, color 0.2s ease, border-color 0.3s ease;
   text-decoration: none;
   color: var(--text-color);
 }
 
 .close-btn:hover,
 .back-btn:hover {
-  transform: translateX(-4px);
+  transform: translateX(-4px) scale(1.03);
   box-shadow: 0 0 20px rgba(139, 49, 238, 0.5);
   color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
 /* Loading bar */
 .loading-bar {
-  height: var(--pixel-border);
-  background: repeating-linear-gradient(90deg, var(--primary-color), var(--secondary-color) 50%, var(--primary-color) 100%);
-  background-size: 200% 100%;
-  animation: gradient 2s linear infinite;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-color), var(--secondary-color), var(--accent-glow), var(--accent-mint), var(--accent-color));
+  background-size: 300% 100%;
+  box-shadow: 0 0 12px rgba(115, 247, 255, 0.6);
+  animation: gradient 1.4s linear infinite;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 10;
+  transition: opacity 0.3s ease;
 }
 
 /* Placeholders */
@@ -849,9 +1033,11 @@ body[data-page="resume"] .main-content section {
 .placeholder-text.short { width: 80%; }
 
 /* Scrollbar */
+html { scrollbar-color: var(--primary-color) var(--darker-bg); scrollbar-width: thin; }
 ::-webkit-scrollbar { width: 12px; }
 ::-webkit-scrollbar-track { background: var(--darker-bg); border-left: 2px solid var(--primary-color); }
 ::-webkit-scrollbar-thumb { background: var(--primary-color); border: 2px solid var(--secondary-color); }
+::-webkit-scrollbar-thumb:hover { background: var(--secondary-color); }
 
 /* Reveal animations */
 .reveal {
@@ -875,6 +1061,11 @@ body[data-page="resume"] .main-content section {
   .post-container { margin: 1.5rem auto; padding: 1.5rem; }
   .hero-avatar { width: 72px; height: 72px; }
   .hero-name { font-size: 1.05rem; }
+  .posts-grid { grid-template-columns: 1fr; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-glow { display: none; }
 }
 
 /* Motion safety */
