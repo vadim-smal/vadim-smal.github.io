@@ -137,6 +137,33 @@ if (motionOk && window.matchMedia('(hover: hover) and (pointer: fine)').matches)
     });
 }
 
+// Fade the page out before navigating to another page on this site, so
+// following a link (e.g. to chronicles.html or a post) feels like a
+// transition instead of an instant cut. The new page's own scroll-reveal
+// system handles the fade-in on arrival.
+if (motionOk) {
+    document.addEventListener('click', (event) => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const link = event.target.closest ? event.target.closest('a[href]') : null;
+        if (!link || link.target === '_blank') return;
+        if (link.protocol !== window.location.protocol || link.host !== window.location.host) return;
+        if (link.href.startsWith('javascript:')) return;
+        if (link.href === window.location.href) return;
+
+        event.preventDefault();
+        document.body.classList.add('page-transition-out');
+        window.setTimeout(() => {
+            window.location.href = link.href;
+        }, 220);
+    });
+
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            document.body.classList.remove('page-transition-out');
+        }
+    });
+}
+
 if (motionOk) {
     let rafId = null;
     const updateSections = () => {
