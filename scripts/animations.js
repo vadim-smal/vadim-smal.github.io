@@ -1,5 +1,5 @@
 const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -10% 0px' };
+const observerOptions = { threshold: 0, rootMargin: '0px 0px 100px 0px' };
 let observer = null;
 
 if (motionOk && 'IntersectionObserver' in window) {

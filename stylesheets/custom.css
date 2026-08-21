@@ -505,6 +505,10 @@ body::after {
   pointer-events: none;
 }
 
+.posts-section > .resume-back {
+  margin-bottom: 0.75rem;
+}
+
 .main-content h2 {
   font-family: 'Cinzel', serif;
   font-weight: 700;
@@ -568,7 +572,8 @@ body::after {
 }
 
 .resume-back {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 0.4rem;
   font-family: 'Cinzel', serif;

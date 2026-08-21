@@ -218,6 +218,7 @@ function buildPageShell(mode, mainData) {
                 <main class="main-content">
                     <section id="hero" class="hero-section"></section>
                     <section id="posts" class="posts-section">
+                        <a class="resume-back" href="index.html">← Back</a>
                         <h2>${mainData.sections.posts.title_all}</h2>
                         <div class="posts-grid"></div>
                     </section>
