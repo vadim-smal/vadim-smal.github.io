@@ -107,6 +107,11 @@ async function populatePosts() {
             throw new Error('Failed to load posts data');
         }
         const posts = postsData.posts || [];
+        const postsSection = document.getElementById('posts');
+        if (posts.length === 0) {
+            if (postsSection) postsSection.style.display = 'none';
+            return;
+        }
         const mode = document.body.dataset.page || 'home';
         const visiblePosts = mode === 'home' ? posts.slice(0, 3) : posts;
         postsContainer.innerHTML = createPostCards(visiblePosts);

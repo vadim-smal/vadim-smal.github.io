@@ -1,18 +1,3 @@
 {
-  "posts": [
-    {
-      "id": "first-post",
-      "title": "🗝️ My First Quest",
-      "date": "2024-03-20",
-      "description": "The beginning of my coding journey in the dark realms...",
-      "file": "first-post.md"
-    },
-    {
-      "id": "second-post",
-      "title": "⚔️ Battle with Legacy Code",
-      "date": "2024-03-21",
-      "description": "Tales of refactoring ancient spells and debugging cursed functions...",
-      "file": "second-post.md"
-    }
-  ]
-} 
+  "posts": []
+}
