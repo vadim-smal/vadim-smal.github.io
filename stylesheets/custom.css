@@ -1,6 +1,4 @@
-/* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+/* Fonts are loaded via <link> tags in each page's <head> (not @import) so they fetch in parallel instead of blocking this stylesheet. */
 
 :root {
   --primary-color: #4a1c83;
@@ -402,6 +400,8 @@ body::after {
   box-shadow: 0 0 10px rgba(139, 49, 238, 0.3), inset 0 0 15px rgba(139, 49, 238, 0.2);
   color: var(--text-color);
   text-shadow: 0 0 5px rgba(176, 136, 249, 0.5);
+  text-decoration: none;
+  display: inline-block;
   padding: 0.9rem 1.2rem;
   font-size: 0.8em;
   position: relative;
@@ -936,6 +936,20 @@ body[data-page="resume"] .main-content section {
   flex-direction: column;
   border-radius: 8px;
   animation: fadeInUp 0.4s var(--ease-snap);
+}
+
+.not-found {
+  align-items: center;
+  text-align: center;
+}
+
+.not-found h2 {
+  margin-bottom: 0.5rem;
+}
+
+.not-found .btn {
+  align-self: center;
+  margin-top: 1rem;
 }
 
 .post-header {

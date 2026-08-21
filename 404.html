@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <title>404 | Vadim Smal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Page not found">
+    <meta name="theme-color" content="#13131b">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&display=swap">
+    <link rel="stylesheet" type="text/css" href="stylesheets/custom.css" media="screen">
+  </head>
+  <body class="post-page">
+    <main class="main-content">
+      <section id="hero" class="hero-section"></section>
+      <article class="post-container not-found">
+        <h2>💀 404: Quest Not Found</h2>
+        <p>You've wandered off the map. This page doesn't exist in this realm.</p>
+        <a href="index.html" class="btn">← Return to the Keep</a>
+      </article>
+    </main>
+    <footer class="site-footer">
+      <span class="site-footer-credits" id="footer-credits"></span>
+    </footer>
+    <script src="scripts/animations.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const hero = document.getElementById('hero');
+        const data = await loadJSON('./data/main.json');
+        if (data && hero) {
+          hero.innerHTML = `
+            <div class="hero-card">
+              <div class="rune-field"></div>
+              <div class="particle-field"></div>
+              <div class="hero">
+                <div class="hero-avatar">
+                  <img src="${data.header.avatar}" alt="${data.header.name} avatar">
+                </div>
+                <div class="hero-text">
+                  <div class="hero-name">${data.header.name}</div>
+                  <div class="hero-meta">
+                    <span class="hero-role">${data.header.role}</span>
+                    <span class="hero-location">📍 ${data.header.location}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        const footer = document.getElementById('footer-credits');
+        if (data && footer) {
+          footer.innerHTML = `
+            ╔══════════════════╗<br>
+            ${data.footer.copyright}<br>
+            ${data.footer.tagline}<br>
+            ╚══════════════════╝
+          `;
+        }
+      });
+    </script>
+  </body>
+</html>
