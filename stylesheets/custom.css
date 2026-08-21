@@ -765,17 +765,12 @@ body[data-page="resume"] .main-content section {
 
 /* Posts */
 .posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
-  align-items: stretch;
-}
-
-.main-content section.posts-section {
-  width: min(1040px, 100%);
 }
 
 .post-card-link {
@@ -783,7 +778,6 @@ body[data-page="resume"] .main-content section {
   color: inherit;
   display: block;
   cursor: pointer;
-  height: 100%;
 }
 
 .post-card-link:focus-visible .post-card {
@@ -799,10 +793,7 @@ body[data-page="resume"] .main-content section {
   position: relative;
   transition: transform 0.15s var(--ease-snap), box-shadow 0.3s ease, border-color 0.3s ease;
   width: 100%;
-  height: 100%;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
   border-radius: 12px;
 }
@@ -863,6 +854,10 @@ body[data-page="resume"] .main-content section {
 }
 
 /* Social */
+#contact {
+  text-align: center;
+}
+
 .social-links {
   display: flex;
   justify-content: center;
@@ -1075,7 +1070,6 @@ html { scrollbar-color: var(--primary-color) var(--darker-bg); scrollbar-width: 
   .post-container { margin: 1.5rem auto; padding: 1.5rem; }
   .hero-avatar { width: 72px; height: 72px; }
   .hero-name { font-size: 1.05rem; }
-  .posts-grid { grid-template-columns: 1fr; }
 }
 
 @media (hover: none), (pointer: coarse) {
