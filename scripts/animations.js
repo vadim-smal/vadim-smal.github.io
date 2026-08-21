@@ -67,10 +67,10 @@ window.addEventListener('load', () => {
         }, 300);
     }, 1000);
 
-    if (!document.querySelector('.starfield')) {
-        const starfield = document.createElement('div');
-        starfield.classList.add('starfield');
-        document.body.prepend(starfield);
+    if (!document.querySelector('.embers')) {
+        const embers = document.createElement('div');
+        embers.classList.add('embers');
+        document.body.prepend(embers);
     }
 
     initializeAnimations();
